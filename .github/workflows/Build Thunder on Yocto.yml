@@ -1,0 +1,133 @@
+name: Build Thunder on Yocto
+
+on:  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_call:
+
+jobs:
+  Thunder:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # machine : [raspberrypi3-64, raspberrypi4-64]
+        # build_type: [debug, release, production]
+        # yocto_version : [dunfell, kirkstone, scarthgap]
+        machine : [raspberrypi3-64]
+        build_type: [debug]
+        yocto_version : [dunfell]
+
+    name: Build ${{matrix.build_type}} on ${{matrix.yocto_version}} for ${{matrix.machine}}
+    steps:
+# ----- Setup Yocto -----
+    - name: Install necessary packages
+      uses: nick-fields/retry@v2
+      with:
+        timeout_minutes: 10
+        max_attempts: 10
+        command: |
+          sudo gem install apt-spy2
+          sudo apt-spy2 fix --commit --launchpad --country=US
+          sudo apt-get update
+          sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential chrpath \
+                           socat cpio python3 python3-pip python3-pexpect xz-utils debianutils \
+                           iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+                           python3-subunit mesa-common-dev zstd liblz4-tool file locales
+          
+    - name: Generate locale
+      run: |
+        sudo locale-gen en_US.UTF-8
+
+    - name: Get poky
+      uses: actions/checkout@v4
+      with:
+        ref: ${{matrix.yocto_version}}
+        github-server-url: https://git.yoctoproject.org 
+        repository: poky
+        path: poky
+
+    - name: Get openembedded-core
+      uses: actions/checkout@v4
+      with:
+        ref: ${{matrix.yocto_version}}
+        github-server-url: https://git.yoctoproject.org 
+        repository: poky
+        path : openembedded-core
+
+    - name: Get bitbake
+      uses: actions/checkout@v4
+      with:
+        ref: ${{matrix.yocto_version}}
+        github-server-url: https://git.yoctoproject.org 
+        repository: bitbake
+        path: openembedded-core/bitbake
+
+    - name: Get meta-openembedded
+      uses: actions/checkout@v4
+      with:
+        ref: ${{matrix.yocto_version}}
+        github-server-url: https://git.yoctoproject.org 
+        repository: meta-openembedded
+        path: meta-openembedded
+
+    - name: Get meta-raspberrypi BSP
+      if: contains(${{matrix.machine}}, 'raspberrypi')
+      uses: actions/checkout@v4
+      with:
+        ref: ${{matrix.yocto_version}}
+        github-server-url: https://git.yoctoproject.org 
+        repository: meta-raspberrypi
+        path: meta-raspberrypi
+
+    - name: Get meta-thunder-framework
+      uses: actions/checkout@v4
+      with:
+        repository: metrological/meta-thunder-framework
+        path: meta-thunder-framework
+
+# ----- Setup build environment -----
+    - name: Initialize build environment
+      run: |
+        source poky/oe-init-build-env build-${{matrix.machine}}
+
+    - name: Initialize build environment
+      run: |
+        echo $PWD
+
+    - name: Add layer meta-oe
+      run: |
+        bitbake-layers add-layer ../source/meta-openembedded/meta-oe
+
+    - name: Add layer meta-python
+      run: |
+        bitbake-layers add-layer ../source/meta-openembedded/meta-python
+
+    - name: Add layer meta-raspberrypi
+      run: |
+        bitbake-layers add-layer ../source/meta-raspberrypi
+
+    - name: Add layer meta-thunder-framework
+      run: |
+        bitbake-layers add-layer ../source/meta-thunder-framework
+
+    - name: Set Machine
+      run: | 
+        echo 'MACHINE = "${{matrix.machine}}"' >> ./conf/local.conf
+
+    - name: Set Build type
+      run: | 
+        echo 'DISTRO_FEATURES += "thunder_${{matrix.build_type}}"' >> ./conf/local.conf
+
+    - name: Check environment
+      run: |
+        bitbake core-image-thunder -n
+
+# ----- Build -----
+    - name: Build image
+      run: |
+        bitbake core-image-thunder
