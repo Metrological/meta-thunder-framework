@@ -1,19 +1,16 @@
 SUMMARY = "WPEFramework interfaces"
 DESCRIPTION = "Thunder interfaces component"
 HOMEPAGE = "https://github.com/rdkcentral/ThunderInterfaces"
-SECTION = "wpe"
+SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=2f6c18f99faffa0e5d4ff478705c53f8"
+PROVIDES += "wpeframework-interfaces"
+DEPENDS += "thunder"
 
 require ../include/thunder.inc
 require ../include/version.inc
 
-DEPENDS += "thunder"
-
-PROVIDES += "wpeframework-interfaces"
-
 SRC_URI = "git://github.com/rdkcentral/ThunderInterfaces.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https"
-SRCREV ?= "f633c6f7ac55ae2a72d1e0013d9dc4db16ff68a6"
 
 inherit python3native
 

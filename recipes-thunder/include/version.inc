@@ -1,4 +1,5 @@
-# Sets a default value for thunder and its components
-PV = "3.0+gitr${SRCPV}"
-PR = "r1"
+# Sets a default version for thunder
 RECIPE_BRANCH ?= "R4"
+SRCREV ?= "R4.4.0"
+
+PV = "${RECIPE_BRANCH}+gitr${SRCPV}"
