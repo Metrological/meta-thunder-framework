@@ -4,6 +4,7 @@ HOMEPAGE = "https://github.com/rdkcentral/ThunderUI"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=66fe57b27abb01505f399ce4405cfea0"
 PROVIDES += "wpeframework-ui"
+RPROVIDES:${PN} += "wpeframework-ui"
 
 require ../include/version.inc
 
@@ -22,5 +23,5 @@ do_install() {
     cp -r ${S}/dist/* ${D}${datadir}/WPEFramework/Controller/UI
 }
 
-FILES_${PN} += "${datadir}/WPEFramework/Controller/UI/*"
+FILES:${PN} += "${datadir}/WPEFramework/Controller/UI/*"
 

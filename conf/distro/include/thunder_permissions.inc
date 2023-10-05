@@ -1,4 +1,4 @@
-ROOTFS_POSTPROCESS_COMMAND_append = " update_thunder_path_permissions;"
+ROOTFS_POSTPROCESS_COMMAND:append = " update_thunder_path_permissions;"
 update_thunder_path_permissions () {
     if [ "${THUNDER_GROUP}" != "" ] && [ "${THUNDER_SUPER_USER_GROUP}" != "" ]; then
         if [ -d "${IMAGE_ROOTFS}/${THUNDER_INSTALL_PATH}" ]; then

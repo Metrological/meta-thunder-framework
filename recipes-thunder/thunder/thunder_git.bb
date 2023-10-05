@@ -5,6 +5,8 @@ SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=85bcfede74b96d9a58c6ea5d4b607e58"
 PROVIDES += "wpeframework"
+RPROVIDES:${PN} += "wpeframework"
+
 
 require ../include/thunder.inc
 require ../include/version.inc
@@ -37,15 +39,15 @@ PACKAGECONFIG ??= "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'provisioning', 'securesocket', '', d)} \
     webserver_autoresume webkitbrowser_autoresume \
 "
-PACKAGECONFIG_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debug', 'debug', '', d)}"
-PACKAGECONFIG_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debugoptimized', 'debugoptimized', '', d)}"
-PACKAGECONFIG_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_production', 'production', '', d)}"
-PACKAGECONFIG_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_release', 'release', '', d)}"
-PACKAGECONFIG_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_releasesymbols', 'releasesymbols', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debug', 'debug', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debugoptimized', 'debugoptimized', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_production', 'production', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_release', 'release', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_releasesymbols', 'releasesymbols', '', d)}"
 
 # CMAKE Build Type
 # DISTRO_FEATURES should be set to propagate build type across all necessary components
-# like, DISTRO_FEATURES_append = "thunder_release"
+# like, DISTRO_FEATURES:append = "thunder_release"
 PACKAGECONFIG[debug] = "-DCMAKE_BUILD_TYPE=Debug,,"
 PACKAGECONFIG[debugoptimized] = "-DCMAKE_BUILD_TYPE=DebugOptimized,,"
 PACKAGECONFIG[releasesymbols] = "-DCMAKE_BUILD_TYPE=RelWithDebInfo,,"
@@ -134,28 +136,28 @@ EXTRA_OECMAKE += "\
     ${@oe.utils.conditional('THUNDER_GROUP', '', '', '-DGROUP="${THUNDER_GROUP}"', d)} \
     -DPYTHON_EXECUTABLE="${PYTHON}""
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${nonarch_base_libdir}/udev/rules.d
     install -m 0644  ${S}/../20-video-device-udev.rules.in ${D}${nonarch_base_libdir}/udev/rules.d/20-video-device-udev.rules
     sed -i -e "s|@SUBSYSTEM@|${THUNDER_PLATFORM_VIDEO_SUBSYSTEM}|g" ${D}${nonarch_base_libdir}/udev/rules.d/20-video-device-udev.rules
     sed -i -e "s|@GROUP@|${THUNDER_PLATFORM_VIDEO_DEVICE_GROUP}|g" ${D}${nonarch_base_libdir}/udev/rules.d/20-video-device-udev.rules
 }
 
-SYSTEMD_SERVICE_${PN} = "wpeframework.service"
+SYSTEMD_SERVICE:${PN} = "wpeframework.service"
 
 PACKAGES =+ "${PN}-initscript"
-FILES_${PN}-initscript = "${sysconfdir}/init.d/wpeframework"
+FILES:${PN}-initscript = "${sysconfdir}/init.d/wpeframework"
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/*.so ${libdir}/*/proxystubs/*.so* ${datadir}/WPEFramework/* "
-FILES_${PN}-dev += "${libdir}/cmake/* ${PKG_CONFIG_DIR}/*.pc"
+FILES:${PN} += "${libdir}/*.so ${libdir}/*/proxystubs/*.so* ${datadir}/WPEFramework/* "
+FILES:${PN}-dev += "${libdir}/cmake/* ${PKG_CONFIG_DIR}/*.pc"
 
 INITSCRIPT_PACKAGES = "${PN}-initscript"
-INITSCRIPT_NAME_${PN}-initscript = "wpeframework"
-INITSCRIPT_PARAMS_${PN}-initscript = "defaults ${THUNDER_START} 24"
-RRECOMMENDS_${PN} = "${PN}-initscript"
+INITSCRIPT_NAME:${PN}-initscript = "wpeframework"
+INITSCRIPT_PARAMS:${PN}-initscript = "defaults ${THUNDER_START} 24"
+RRECOMMENDS:${PN} = "${PN}-initscript"
 
 # If WPE Framework is enabled as distro feature, start earlier. Assuming packagegroup-wpe-boot is used and we're in control for the network
 THUNDER_START = "${@bb.utils.contains('DISTRO_FEATURES', 'wpeframework', '40', '80', d)}"
 
-INSANE_SKIP_${PN} += "dev-so"
-INSANE_SKIP_${PN}-dbg += "dev-so"
+INSANE_SKIP:${PN} += "dev-so"
+INSANE_SKIP:${PN}-dbg += "dev-so"

@@ -5,6 +5,7 @@ SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c3349dc67b2f8c28fc99b300eb39e3cc"
 PROVIDES += "wpeframework-tools-native"
+RPROVIDES:${PN} += "wpeframework-tools-native"
 DEPENDS += "python3-native python3-jsonref-native"
 
 require ../include/version.inc
@@ -26,4 +27,4 @@ PACKAGECONFIG[proxystub_coherency] = "\
 
 inherit cmake pkgconfig native python3native
 
-FILES_${PN} += "${datadir}/*/Modules/*.cmake"
+FILES:${PN} += "${datadir}/*/Modules/*.cmake"

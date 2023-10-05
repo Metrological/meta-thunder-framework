@@ -5,6 +5,7 @@ SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=2f6c18f99faffa0e5d4ff478705c53f8"
 PROVIDES += "wpeframework-interfaces"
+RPROVIDES:${PN} += "wpeframework-interfaces"
 DEPENDS += "thunder"
 
 require ../include/thunder.inc
@@ -20,7 +21,7 @@ EXTRA_OECMAKE += "\
     -DPYTHON_EXECUTABLE=${PYTHON} \
 "
 
-do_install_append() {
+do_install:append() {
     if ${@bb.utils.contains("DISTRO_FEATURES", "opencdm", "true", "false", d)}
     then
         install -m 0644 ${D}${includedir}/WPEFramework/interfaces/IDRM.h ${D}${includedir}/cdmi.h
@@ -28,10 +29,10 @@ do_install_append() {
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/* ${datadir}/WPEFramework/* ${PKG_CONFIG_DIR}/*.pc"
-FILES_${PN}-dev += "${libdir}/cmake/*"
-FILES_${PN} += "${includedir}/cdmi.h"
+FILES:${PN} += "${libdir}/* ${datadir}/WPEFramework/* ${PKG_CONFIG_DIR}/*.pc"
+FILES:${PN}-dev += "${libdir}/cmake/*"
+FILES:${PN} += "${includedir}/cdmi.h"
 
-INSANE_SKIP_${PN} += "dev-so"
-INSANE_SKIP_${PN}-dbg += "dev-so"
+INSANE_SKIP:${PN} += "dev-so"
+INSANE_SKIP:${PN}-dbg += "dev-so"
 

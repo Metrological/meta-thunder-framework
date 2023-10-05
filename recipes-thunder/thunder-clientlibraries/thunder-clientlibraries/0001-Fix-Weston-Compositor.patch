@@ -1,0 +1,110 @@
+From 4021d1a2265f98b1968101b944776825435d9f18 Mon Sep 17 00:00:00 2001
+From: Bram Oosterhuis <bram.oosterhuis.nl@gmail.com>
+Date: Thu, 5 Oct 2023 12:36:16 +0200
+Subject: [PATCH] Fix Weston Compositor
+
+---
+ Source/compositorclient/Wayland/CMakeLists.txt |  2 +-
+ Source/compositorclient/Wayland/Weston.cpp     |  4 ++--
+ cmake/FindEGL.cmake                            |  2 +-
+ cmake/FindWaylandClient.cmake                  | 17 ++++++++++++++---
+ cmake/FindWaylandEGL.cmake                     |  2 +-
+ 5 files changed, 19 insertions(+), 8 deletions(-)
+
+diff --git a/Source/compositorclient/Wayland/CMakeLists.txt b/Source/compositorclient/Wayland/CMakeLists.txt
+index c43f78a..41202a2 100644
+--- a/Source/compositorclient/Wayland/CMakeLists.txt
++++ b/Source/compositorclient/Wayland/CMakeLists.txt
+@@ -33,7 +33,7 @@ find_package(NXCLIENT)
+ add_library(${PLUGIN_COMPOSITOR_IMPLEMENTATION} OBJECT ${PLUGIN_COMPOSITOR_SUB_IMPLEMENTATION}.cpp)
+ 
+ if ("${PLUGIN_COMPOSITOR_SUB_IMPLEMENTATION}" STREQUAL "Weston")
+-    target_sources(${PLUGIN_COMPOSITOR_IMPLEMENTATION} xdg-shell-client-protocol.c)
++    target_sources(${PLUGIN_COMPOSITOR_IMPLEMENTATION} PRIVATE xdg-shell-client-protocol.c)
+ 
+     find_package(GLESv2 REQUIRED)
+     if (GLESV2_FOUND)
+diff --git a/Source/compositorclient/Wayland/Weston.cpp b/Source/compositorclient/Wayland/Weston.cpp
+index 308b6f3..c525232 100644
+--- a/Source/compositorclient/Wayland/Weston.cpp
++++ b/Source/compositorclient/Wayland/Weston.cpp
+@@ -494,7 +494,7 @@ namespace Wayland {
+         if (_xdg_surface != nullptr) {
+             if (_display != nullptr) {
+                 // Unlink the surface and remove from th
+-                _display->Destructed(reinterpret_cast<uint32_t>(_xdg_surface));
++                _display->Destructed((reinterpret_cast<Core::instance_id>(_xdg_surface) & uint32_t(~0)));
+             }
+             xdg_surface_destroy(_xdg_surface);
+             _xdg_surface = nullptr;
+@@ -924,7 +924,7 @@ namespace Wayland {
+             xdg_toplevel_set_title(surface->_xdg_toplevel, name.c_str());
+ 
+             _waylandSurfaces.insert(std::pair<struct wl_surface*, SurfaceImplementation*>(surface->_surface, surface));
+-            _surfaces.insert(std::pair<uint32_t, SurfaceImplementation*>(reinterpret_cast<uint32_t>(surface->_xdg_surface), surface));
++            _surfaces.insert(std::pair<uint32_t, SurfaceImplementation*>((reinterpret_cast<Core::instance_id>(surface->_xdg_surface) & uint32_t(~0)), surface));
+             wl_surface_commit(surface->_surface);
+             result = surface;
+         }
+diff --git a/cmake/FindEGL.cmake b/cmake/FindEGL.cmake
+index 6533dc9..fe0da23 100644
+--- a/cmake/FindEGL.cmake
++++ b/cmake/FindEGL.cmake
+@@ -68,7 +68,7 @@ find_path(EGL_INCLUDE_DIRS NAMES EGL/egl.h
+ set(EGL_INCLUDE_DIRS ${PC_EGL_INCLUDE_DIRS} CACHE FILEPATH "FIXME")
+ 
+ include(FindPackageHandleStandardArgs)
+-find_package_handle_standard_args(EGL DEFAULT_MSG EGL_LIBRARY EGL_LIBRARIES EGL_INCLUDE_DIRS)
++find_package_handle_standard_args(EGL DEFAULT_MSG EGL_LIBRARY EGL_LIBRARIES)
+ mark_as_advanced(EGL_INCLUDE_DIRS EGL_LIBRARIES)
+ 
+ if(EGL_FOUND AND NOT TARGET EGL::EGL)
+diff --git a/cmake/FindWaylandClient.cmake b/cmake/FindWaylandClient.cmake
+index 399c747..9fa5eff 100644
+--- a/cmake/FindWaylandClient.cmake
++++ b/cmake/FindWaylandClient.cmake
+@@ -37,14 +37,25 @@ elseif(WaylandClient_FIND_REQUIRED)
+ endif()
+ 
+ find_package(PkgConfig)
+-pkg_check_modules(WAYLANDCLIENT ${_WAYLANDCLIENT_MODE} wayland-client>=1.2 )
++pkg_check_modules(WAYLANDCLIENT ${_WAYLANDCLIENT_MODE} IMPORTED_TARGET wayland-client>=1.2 )
++
++
++set(checklist  _FOUND _LIBRARIES _LINK_LIBRARIES _LIBRARY_DIRS _LDFLAGS _LDFLAGS_OTHER _INCLUDE_DIRS _CFLAGS _CFLAGS_OTHER)
++
++
++foreach(check ${checklist})
++
++message(STATUS "WAYLANDCLIENT${check}: >${WAYLANDCLIENT${check}}<")
++
++endforeach()
++
++# message(FATAL_ERROR "Stop")
+ 
+ find_library(WAYLANDCLIENT_LIB NAMES wayland-client
+         HINTS ${WAYLANDCLIENT_LIBDIR} ${WAYLANDCLIENT_LIBRARY_DIRS})
+ 
+-
+ include(FindPackageHandleStandardArgs)
+-find_package_handle_standard_args(WaylandClient  DEFAULT_MSG WAYLANDCLIENT_FOUND WAYLANDCLIENT_INCLUDE_DIRS WAYLANDCLIENT_LIBRARIES)
++find_package_handle_standard_args(WaylandClient DEFAULT_MSG WAYLANDCLIENT_FOUND WAYLANDCLIENT_LIBRARIES)
+ mark_as_advanced(WAYLANDCLIENT_INCLUDE_DIRS WAYLANDCLIENT_LIBRARIES)
+ 
+ if(WaylandClient_FOUND AND NOT TARGET WaylandClient::WaylandClient)
+diff --git a/cmake/FindWaylandEGL.cmake b/cmake/FindWaylandEGL.cmake
+index 752a65d..f28c77e 100644
+--- a/cmake/FindWaylandEGL.cmake
++++ b/cmake/FindWaylandEGL.cmake
+@@ -42,7 +42,7 @@ find_library(WAYLAND_EGL_LIB NAMES wayland-egl
+         HINTS ${WAYLAND_EGL_LIBDIR} ${WAYLAND_EGL_LIBRARY_DIRS})
+ 
+ include(FindPackageHandleStandardArgs)
+-find_package_handle_standard_args(WaylandEGL DEFAULT_MSG WAYLAND_EGL_FOUND WAYLAND_EGL_INCLUDE_DIRS WAYLAND_EGL_LIBRARIES WAYLAND_EGL_LIB)
++find_package_handle_standard_args(WaylandEGL DEFAULT_MSG WAYLAND_EGL_FOUND WAYLAND_EGL_LIBRARIES WAYLAND_EGL_LIB)
+ mark_as_advanced(WAYLAND_EGL_INCLUDE_DIRS WAYLAND_EGL_LIBRARIES)
+ 
+ if(WaylandEGL_FOUND AND NOT TARGET WaylandEGL::WaylandEGL)
+-- 
+2.34.1
+

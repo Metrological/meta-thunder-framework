@@ -15,7 +15,7 @@ SRC_URI = "\
 "
 SRCREV = "e79e4de4ac16da0ce48777afb72c6241de870525"
 
-DEPENDS_append = " yajl libseccomp libtool libcap"
+DEPENDS:append = " yajl libseccomp libtool libcap"
 
 S = "${WORKDIR}/git"
 

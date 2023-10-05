@@ -5,12 +5,16 @@ SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=847677038847363222ffb66cfa6406c2"
 PROVIDES += "wpeframework-clientlibraries"
+RPROVIDES:${PN} += "wpeframework-clientlibraries"
 DEPENDS += "thunder-interfaces"
 
 require ../include/thunder.inc
 require ../include/version.inc
 
-SRC_URI = "git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https"
+SRC_URI = "\
+	git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https \
+	file://0001-Fix-Weston-Compositor.patch \
+"
 
 inherit python3native
 WPE_CDMI_ADAPTER_IMPL ??= "${@bb.utils.contains('DISTRO_FEATURES', 'nexus_svp', 'opencdmi_brcm_svp', 'opencdm_gst', d)}"
@@ -19,15 +23,35 @@ PACKAGECONFIG ??= "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'opencdm', 'opencdm ${WPE_CDMI_ADAPTER_IMPL}', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'provisioning', 'provisionproxy', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'security', 'securityagent', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'compositor', 'compositorclient', '', d)} \
     virtualinput \
 "
 
-PACKAGECONFIG_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'compositor', 'compositorclient', '', d)}"
 WPE_INCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY ??= "OFF"
+
 PACKAGECONFIG[cryptography] = "\
     -DCRYPTOGRAPHY=ON \
     -DINCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY="${WPE_INCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY}" \
     ,-DCRYPTOGRAPHY=OFF, \
+"
+
+PACKAGECONFIG[compositorclient] = "-DCOMPOSITORCLIENT=ON,-DCOMPOSITORCLIENT=OFF"
+
+PACKAGECONFIG[compositorclient_mesa] = "\
+    -DPLUGIN_COMPOSITOR_IMPLEMENTATION='Mesa' \
+    ,,mesa libdrm \
+"
+
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'compositorclient_wayland', '', d)}"
+
+# Choose westeros or weston dependency
+WPE_COMPOSITOR_WAYLAND_SUB_IMPL ??= "${@bb.utils.contains('DISTRO_FEATURES', 'weston', 'Weston', 'Westeros', d)}"
+WPE_COMPOSITOR_WAYLAND_DEP ??= "${@bb.utils.contains('DISTRO_FEATURES', 'weston', 'weston wayland', 'westeros', d)}"
+
+PACKAGECONFIG[compositorclient_wayland] = "\
+    -DPLUGIN_COMPOSITOR_IMPLEMENTATION='Wayland' \
+    -DPLUGIN_COMPOSITOR_SUB_IMPLEMENTATION=${WPE_COMPOSITOR_WAYLAND_SUB_IMPL} \
+    ,,${WPE_COMPOSITOR_WAYLAND_DEP} \
 "
 
 PACKAGECONFIG[bluetoothaudiosink] = "-DBLUETOOTHAUDIOSINK=ON,-DBLUETOOTHAUDIOSINK=OFF,bluez5"
@@ -56,11 +80,11 @@ EXTRA_OECMAKE += "\
 "
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/*.so ${datadir}/WPEFramework/* ${PKG_CONFIG_DIR}/*.pc"
-FILES_${PN}-dev += "${libdir}/cmake/*"
+FILES:${PN} += "${libdir}/*.so ${datadir}/WPEFramework/* ${PKG_CONFIG_DIR}/*.pc"
+FILES:${PN}-dev += "${libdir}/cmake/*"
 
-INSANE_SKIP_${PN} += "dev-so"
-INSANE_SKIP_${PN}-dbg += "dev-so"
+INSANE_SKIP:${PN} += "dev-so"
+INSANE_SKIP:${PN}-dbg += "dev-so"
 
 # Avoid settings ADNEEDED in LDFLAGS as this can cause the libcompositor.so to drop linking to libEGL/libGLES
 # which might not be needed at first glance but will cause problems higher up in the change, there for lets drop -Wl,--as-needed

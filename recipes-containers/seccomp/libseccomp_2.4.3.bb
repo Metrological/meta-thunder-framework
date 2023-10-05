@@ -22,5 +22,5 @@ do_compile_ptest() {
     oe_runmake -C tests check-build
 }
 
-FILES_${PN} = "${bindir} ${libdir}/${BPN}.so*"
+FILES:${PN} = "${bindir} ${libdir}/${BPN}.so*"
 
