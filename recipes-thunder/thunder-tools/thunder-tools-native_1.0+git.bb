@@ -25,6 +25,9 @@ PACKAGECONFIG[proxystub_coherency] = "\
     ,-DPROXYSTUB_GENERATOR_ENABLE_COHERENCY="OFF", \
 "
 
-inherit cmake pkgconfig native python3native
+inherit cmake pkgconfig python3native 
+
+# native need to be inherited last
+inherit native
 
 FILES:${PN} += "${datadir}/*/Modules/*.cmake"
