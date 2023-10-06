@@ -23,14 +23,14 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 inherit autotools-brokensep pkgconfig python3native
 
-do_configure_prepend () {
+do_configure:prepend () {
     cd ${S}
     ./autogen.sh
 }
 
 # Force bitbake to ensure libocispec has been compiled before compiling crun
 # Fix random build failure due to race condition in Jenkins
-do_compile_prepend() {
+do_compile:prepend() {
     cd ${S}/libocispec
     oe_runmake
     cd ${S}
