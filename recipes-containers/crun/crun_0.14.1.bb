@@ -19,7 +19,7 @@ DEPENDS:append = " yajl libseccomp libtool libcap"
 
 S = "${WORKDIR}/git"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 inherit autotools-brokensep pkgconfig python3native
 
