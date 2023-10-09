@@ -7,9 +7,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=85bcfede74b96d9a58c6ea5d4b607e58"
 PROVIDES += "wpeframework"
 RPROVIDES:${PN} += "wpeframework"
 
-
 require ../include/thunder.inc
 require ../include/version.inc
+
 require ${@oe.utils.conditional('THUNDER_GROUP', '', '', 'include/usergroup/thunder.inc', d)}
 
 SRC_URI = "git://github.com/rdkcentral/Thunder.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https"
