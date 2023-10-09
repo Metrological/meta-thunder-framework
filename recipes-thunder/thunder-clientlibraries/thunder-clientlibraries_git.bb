@@ -24,54 +24,38 @@ PACKAGECONFIG ??= "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'provisioning', 'provisionproxy', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'security', 'securityagent', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'compositor', 'compositorclient', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'cryptography', 'cryptography', '', d)} \
     virtualinput \
 "
 
-WPE_INCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY ??= "OFF"
-
-PACKAGECONFIG[cryptography] = "\
-    -DCRYPTOGRAPHY=ON \
-    -DINCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY="${WPE_INCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY}" \
-    ,-DCRYPTOGRAPHY=OFF, \
-"
-
-PACKAGECONFIG[compositorclient] = "-DCOMPOSITORCLIENT=ON,-DCOMPOSITORCLIENT=OFF"
-
-PACKAGECONFIG[compositorclient_mesa] = "\
-    -DPLUGIN_COMPOSITOR_IMPLEMENTATION='Mesa' \
-    ,,mesa libdrm \
-"
-
-PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'compositorclient_wayland', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' compositorclient_wayland', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'secapi', ' cryptography_secapi', 'cryptography_openssl', d)}"
 
 # Choose westeros or weston dependency
-WPE_COMPOSITOR_WAYLAND_SUB_IMPL ??= "${@bb.utils.contains('DISTRO_FEATURES', 'weston', 'Weston', 'Westeros', d)}"
-WPE_COMPOSITOR_WAYLAND_DEP ??= "${@bb.utils.contains('DISTRO_FEATURES', 'weston', 'weston wayland', 'westeros', d)}"
-
-PACKAGECONFIG[compositorclient_wayland] = "\
-    -DPLUGIN_COMPOSITOR_IMPLEMENTATION='Wayland' \
-    -DPLUGIN_COMPOSITOR_SUB_IMPLEMENTATION=${WPE_COMPOSITOR_WAYLAND_SUB_IMPL} \
-    ,,${WPE_COMPOSITOR_WAYLAND_DEP} \
-"
+PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston', ' compositorclient_wayland_weston', ' compositorclient_wayland_westeros', d)}"
 
 PACKAGECONFIG[bluetoothaudiosink] = "-DBLUETOOTHAUDIOSINK=ON,-DBLUETOOTHAUDIOSINK=OFF,bluez5"
-PACKAGECONFIG[cryptography_thunder] = "-DCRYPTOGRAPHY_IMPLEMENTATION="Thunder",,"
-PACKAGECONFIG[cryptography_openssl] = "-DCRYPTOGRAPHY_IMPLEMENTATION="OpenSSL",,"
+PACKAGECONFIG[compositorclient] = "-DCOMPOSITORCLIENT=ON,-DCOMPOSITORCLIENT=OFF"
+PACKAGECONFIG[compositorclient_mesa] = "-DPLUGIN_COMPOSITOR_IMPLEMENTATION='Mesa',,mesa libdrm"
+PACKAGECONFIG[compositorclient_wayland] = "-DPLUGIN_COMPOSITOR_IMPLEMENTATION='Wayland',,"
+PACKAGECONFIG[compositorclient_wayland_westeros] = "-DPLUGIN_COMPOSITOR_SUB_IMPLEMENTATION='Westeros',,westeros"
+PACKAGECONFIG[compositorclient_wayland_weston] = "-DPLUGIN_COMPOSITOR_SUB_IMPLEMENTATION='Weston',,weston wayland"
+PACKAGECONFIG[cryptography] = "-DCRYPTOGRAPHY=ON,-DCRYPTOGRAPHY=OFF,"
+PACKAGECONFIG[cryptography_openssl] = "-DCRYPTOGRAPHY_IMPLEMENTATION="OpenSSL",,openssl"
+PACKAGECONFIG[cryptography_secapi] = "-DCRYPTOGRAPHY_IMPLEMENTATION="SecApi",,virtual/secapi"
+PACKAGECONFIG[cryptography_software] = "-DINCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY='ON',-DINCLUDE_SOFTWARE_CRYPTOGRAPHY_LIBRARY='OFF',"
 PACKAGECONFIG[cryptography_test] = "-DBUILD_CRYPTOGRAPHY_TESTS=ON,,"
-
+PACKAGECONFIG[cryptography_thunder] = "-DCRYPTOGRAPHY_IMPLEMENTATION="Thunder",,"
 PACKAGECONFIG[deviceinfo] = "-DDEVICEINFO=ON,-DDEVICEINFO=OFF,"
 PACKAGECONFIG[displayinfo] = "-DDISPLAYINFO=ON,-DDISPLAYINFO=OFF,"
 PACKAGECONFIG[gstreamerclient] = "-DGSTREAMERCLIENT=ON,-DGSTREAMERCLIENT=OFF,gstreamer1 gst1-plugins-base"
 PACKAGECONFIG[gstreamerclient_rpi] = "-DPLUGIN_COMPOSITOR_IMPLEMENTATION='RPI',,"
-
+PACKAGECONFIG[opencdm] = "-DCDMI=ON,-DCDMI=OFF,"
+PACKAGECONFIG[opencdm_gst] = "-DCDMI_ADAPTER_IMPLEMENTATION=gstreamer,,gstreamer1.0"
 PACKAGECONFIG[playerinfo] = "-DPLAYERINFO=ON,-DPLAYERINFO=OFF,"
 PACKAGECONFIG[provisionproxy] = "-DPROVISIONPROXY=ON -DUSE_PROVISIONING=ON,-DPROVISIONPROXY=OFF,libprovision"
 PACKAGECONFIG[securityagent] = "-DSECURITYAGENT=ON,-DSECURITYAGENT=OFF"
 PACKAGECONFIG[virtualinput] = "-DVIRTUALINPUT=ON,-DVIRTUALINPUT=OFF,"
-
-# OCDM
-PACKAGECONFIG[opencdm] = "-DCDMI=ON,-DCDMI=OFF,"
-PACKAGECONFIG[opencdm_gst] = "-DCDMI_ADAPTER_IMPLEMENTATION=gstreamer,,gstreamer1.0"
 
 EXTRA_OECMAKE += "\
     -DBUILD_SHARED_LIBS=ON \
