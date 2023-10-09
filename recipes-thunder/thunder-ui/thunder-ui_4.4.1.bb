@@ -9,7 +9,6 @@ RPROVIDES:${PN} += "wpeframework-ui"
 require ../include/version.inc
 
 SRC_URI = "git://github.com/rdkcentral/ThunderUI.git;branch=${RECIPE_BRANCH};protocol=https"
-SRCREV ?= "b4f54fd06fc4e6c748f21d3f62d3f8763f58d6d1"
 
 S = "${WORKDIR}/git"
 
