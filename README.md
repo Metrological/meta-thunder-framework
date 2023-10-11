@@ -44,7 +44,7 @@ To get started with `meta-thunder-framework` and begin building thunder based ap
     ``` shell
     git clone -b dunfell git://git.yoctoproject.org/meta-raspberrypi
     ```
-1. From your work dir run ```source source/poky/oe-init-build-env ../build-rpi```
+1. From your work dir run ```source source/poky/oe-init-build-env ./build-rpi```
 1. Add these layers to build
     ``` shell
     bitbake-layers add-layer ../source/meta-openembedded/meta-oe
