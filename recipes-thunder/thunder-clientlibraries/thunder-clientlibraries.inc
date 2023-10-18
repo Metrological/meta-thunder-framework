@@ -11,10 +11,10 @@ DEPENDS += "thunder-interfaces"
 require ../include/thunder.inc
 require ../include/version.inc
 
-SRC_URI = "\
-	git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https \
-	file://0001-Fix-Weston-Compositor.patch \
-"
+SRC_URI = "git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https \
+           file://0001-Fix-Weston-Compositor.patch \
+           file://0001-Simplify-FindGLESv2.patch \
+           "
 
 inherit python3native
 WPE_CDMI_ADAPTER_IMPL ??= "${@bb.utils.contains('DISTRO_FEATURES', 'nexus_svp', 'opencdmi_brcm_svp', 'opencdm_gst', d)}"
