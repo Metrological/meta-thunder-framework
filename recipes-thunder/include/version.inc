@@ -8,6 +8,3 @@ def GetMinorVersion(v):
 RECIPE_BRANCH ?= "R${@GetMajorVersion('${PV}')}_${@GetMinorVersion('${PV}')}"
 
 RECIPE_TAG ?= "R${PV}"
-
-# this should point to a git tag
-SRCREV ?= "R${PV}"
