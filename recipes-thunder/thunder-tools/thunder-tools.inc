@@ -10,7 +10,7 @@ DEPENDS += "python3-native python3-jsonref-native"
 
 require ../include/version.inc
 
-SRC_URI ?= "git://github.com/rdkcentral/ThunderTools.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https"
+SRC_URI = "git://github.com/rdkcentral/ThunderTools.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https"
 
 S = "${WORKDIR}/git"
 
