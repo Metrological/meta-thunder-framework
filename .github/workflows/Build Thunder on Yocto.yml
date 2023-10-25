@@ -51,19 +51,19 @@ jobs:
         ref: ${{matrix.yocto_version}}
         path : poky
 
+    # The repo git/openembedded-core fails, falling back on github mirror 
     - name: Get openembedded-core
       uses: actions/checkout@v4
       with:
-        github-server-url: 'https://git.openembedded.org'
-        repository: git/openembedded-core
+        repository: openembedded/openembedded-core
         ref: ${{matrix.yocto_version}}
         path : openembedded-core
 
+    # the repo git/meta-openembedded fails, falling back on github mirror
     - name: Get meta-openembedded
       uses: actions/checkout@v4
       with:
-        github-server-url: 'https://git.openembedded.org'
-        repository: git/meta-openembedded
+        repository: openembedded/meta-openembedded
         ref: ${{matrix.yocto_version}}
         path : meta-openembedded
 
