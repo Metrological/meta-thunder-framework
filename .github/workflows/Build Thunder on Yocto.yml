@@ -49,11 +49,11 @@ jobs:
 
     - name: Get openembedded-core
       run: |
-        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/openembedded-core
+        git clone -b ${{matrix.yocto_version}} https://git.openembedded.org/openembedded-core
 
     - name: Get meta-openembedded
       run: |
-        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/meta-openembedded
+        git clone -b ${{matrix.yocto_version}} https://git.openembedded.org/meta-openembedded
 
     - name: Get meta-raspberrypi BSP
       if: contains(${{matrix.machine}}, 'raspberrypi')
