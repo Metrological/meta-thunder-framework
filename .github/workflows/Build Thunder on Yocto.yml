@@ -52,17 +52,29 @@ jobs:
         path : poky
 
     - name: Get openembedded-core
-      run: |
-        git clone -b ${{matrix.yocto_version}} https://git.openembedded.org/openembedded-core
+      uses: actions/checkout@v4
+      with:
+        github-server-url: 'https://git.openembedded.org'
+        repository: git/openembedded-core
+        ref: ${{matrix.yocto_version}}
+        path : openembedded-core
 
     - name: Get meta-openembedded
-      run: |
-        git clone -b ${{matrix.yocto_version}} https://git.openembedded.org/meta-openembedded
+      uses: actions/checkout@v4
+      with:
+        github-server-url: 'https://git.openembedded.org'
+        repository: git/meta-openembedded
+        ref: ${{matrix.yocto_version}}
+        path : meta-openembedded
 
     - name: Get meta-raspberrypi BSP
       if: contains(${{matrix.machine}}, 'raspberrypi')
-      run: |
-        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/meta-raspberrypi
+      uses: actions/checkout@v4
+      with:
+        github-server-url: 'https://git.yoctoproject.org'
+        repository: git/meta-raspberrypi
+        ref: ${{matrix.yocto_version}}
+        path : meta-raspberrypi
 
     - name: Get meta-thunder-framework
       uses: actions/checkout@v4
