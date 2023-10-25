@@ -44,51 +44,38 @@ jobs:
         sudo locale-gen en_US.UTF-8
 
     - name: Get poky
-      uses: actions/checkout@v4
+      uses: sudosubin/git-clone-action@v1
       with:
         ref: ${{matrix.yocto_version}}
-        github-server-url: https://git.yoctoproject.org 
+        platform: https://git.yoctoproject.org 
         repository: poky
-        path: poky
 
     - name: Get openembedded-core
-      uses: actions/checkout@v4
+      uses: sudosubin/git-clone-action@v1
       with:
         ref: ${{matrix.yocto_version}}
-        github-server-url: https://git.yoctoproject.org 
+        platform: https://git.yoctoproject.org 
         repository: poky
-        path : openembedded-core
-
-    - name: Get bitbake
-      uses: actions/checkout@v4
-      with:
-        ref: ${{matrix.yocto_version}}
-        github-server-url: https://git.yoctoproject.org 
-        repository: bitbake
-        path: openembedded-core/bitbake
 
     - name: Get meta-openembedded
-      uses: actions/checkout@v4
+      uses: sudosubin/git-clone-action@v1
       with:
         ref: ${{matrix.yocto_version}}
-        github-server-url: https://git.yoctoproject.org 
+        platform: https://git.yoctoproject.org 
         repository: meta-openembedded
-        path: meta-openembedded
 
     - name: Get meta-raspberrypi BSP
       if: contains(${{matrix.machine}}, 'raspberrypi')
-      uses: actions/checkout@v4
+      uses: sudosubin/git-clone-action@v1
       with:
         ref: ${{matrix.yocto_version}}
-        github-server-url: https://git.yoctoproject.org 
+        platform: https://git.yoctoproject.org 
         repository: meta-raspberrypi
-        path: meta-raspberrypi
 
     - name: Get meta-thunder-framework
       uses: actions/checkout@v4
       with:
         repository: metrological/meta-thunder-framework
-        path: meta-thunder-framework
 
 # ----- Setup build environment -----
     - name: Initialize build environment
@@ -101,19 +88,19 @@ jobs:
 
     - name: Add layer meta-oe
       run: |
-        bitbake-layers add-layer ../source/meta-openembedded/meta-oe
+        bitbake-layers add-layer ../meta-openembedded/meta-oe
 
     - name: Add layer meta-python
       run: |
-        bitbake-layers add-layer ../source/meta-openembedded/meta-python
+        bitbake-layers add-layer ../meta-openembedded/meta-python
 
     - name: Add layer meta-raspberrypi
       run: |
-        bitbake-layers add-layer ../source/meta-raspberrypi
+        bitbake-layers add-layer ../meta-raspberrypi
 
     - name: Add layer meta-thunder-framework
       run: |
-        bitbake-layers add-layer ../source/meta-thunder-framework
+        bitbake-layers add-layer ../meta-thunder-framework
 
     - name: Set Machine
       run: | 
