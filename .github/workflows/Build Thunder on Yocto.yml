@@ -46,7 +46,7 @@ jobs:
     - name: Get poky
       uses: actions/checkout@v4
       with:
-        github-server-url: 'https://git.openembedded.org'
+        github-server-url: 'https://git.yoctoproject.org'
         repository: git/poky
         ref: ${{matrix.yocto_version}}
         path : poky
