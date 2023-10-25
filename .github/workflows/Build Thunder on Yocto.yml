@@ -65,6 +65,10 @@ jobs:
       with:
         repository: metrological/meta-thunder-framework
 
+    - name: Initialize build environment
+      run: |
+        ls -la ./
+        
 # ----- Setup build environment -----
     - name: Initialize build environment
       run: |
