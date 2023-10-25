@@ -44,33 +44,21 @@ jobs:
         sudo locale-gen en_US.UTF-8
 
     - name: Get poky
-      uses: sudosubin/git-clone-action@v1
-      with:
-        ref: ${{matrix.yocto_version}}
-        platform: https://git.yoctoproject.org 
-        repository: poky
+      run: |
+        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/poky
 
     - name: Get openembedded-core
-      uses: sudosubin/git-clone-action@v1
-      with:
-        ref: ${{matrix.yocto_version}}
-        platform: https://git.yoctoproject.org 
-        repository: poky
+      run: |
+        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/openembedded-core
 
     - name: Get meta-openembedded
-      uses: sudosubin/git-clone-action@v1
-      with:
-        ref: ${{matrix.yocto_version}}
-        platform: https://git.yoctoproject.org 
-        repository: meta-openembedded
+      run: |
+        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/meta-openembedded
 
     - name: Get meta-raspberrypi BSP
       if: contains(${{matrix.machine}}, 'raspberrypi')
-      uses: sudosubin/git-clone-action@v1
-      with:
-        ref: ${{matrix.yocto_version}}
-        platform: https://git.yoctoproject.org 
-        repository: meta-raspberrypi
+      run: |
+        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/meta-raspberrypi
 
     - name: Get meta-thunder-framework
       uses: actions/checkout@v4
