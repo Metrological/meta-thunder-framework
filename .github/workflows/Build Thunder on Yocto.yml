@@ -84,7 +84,7 @@ jobs:
 
     - name: Initialize build environment
       run: |
-        cd ../ && ls -la ./
+        ls -la ./
         
 # ----- Setup build environment -----
     - name: Initialize build environment
