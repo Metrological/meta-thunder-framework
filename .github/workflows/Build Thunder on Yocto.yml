@@ -48,7 +48,7 @@ jobs:
       with:
         github-server-url: 'https://git.openembedded.org'
         repository: git/poky
-        rev: ${{matrix.yocto_version}}
+        ref: ${{matrix.yocto_version}}
         path : poky
 
     - name: Get openembedded-core
