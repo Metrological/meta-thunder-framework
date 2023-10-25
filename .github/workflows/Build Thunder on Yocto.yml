@@ -44,8 +44,12 @@ jobs:
         sudo locale-gen en_US.UTF-8
 
     - name: Get poky
-      run: |
-        git clone -b ${{matrix.yocto_version}} https://git.yoctoproject.org/poky
+      uses: actions/checkout@v4
+      with:
+        github-server-url: 'https://git.openembedded.org'
+        repository: git/poky
+        rev: ${{matrix.yocto_version}}
+        path : poky
 
     - name: Get openembedded-core
       run: |
@@ -64,6 +68,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: metrological/meta-thunder-framework
+        path: meta-thunder-framework
 
     - name: Initialize build environment
       run: |
