@@ -81,49 +81,16 @@ jobs:
       with:
         repository: metrological/meta-thunder-framework
         path: meta-thunder-framework
-
-    - name: Initialize build environment
-      run: |
-        ls -la ./
         
-# ----- Setup build environment -----
-    - name: Initialize build environment
+# ----- Build image -----
+    - name: Build
       run: |
         source poky/oe-init-build-env build-${{matrix.machine}}
-
-    - name: Initialize build environment
-      run: |
-        echo $PWD
-
-    - name: Add layer meta-oe
-      run: |
         bitbake-layers add-layer ../meta-openembedded/meta-oe
-
-    - name: Add layer meta-python
-      run: |
         bitbake-layers add-layer ../meta-openembedded/meta-python
-
-    - name: Add layer meta-raspberrypi
-      run: |
         bitbake-layers add-layer ../meta-raspberrypi
-
-    - name: Add layer meta-thunder-framework
-      run: |
         bitbake-layers add-layer ../meta-thunder-framework
-
-    - name: Set Machine
-      run: | 
-        echo 'MACHINE = "${{matrix.machine}}"' >> ./conf/local.conf
-
-    - name: Set Build type
-      run: | 
+        echo 'MACHINE = "${{matrix.machine}}"' >> ./conf/local.conf 
         echo 'DISTRO_FEATURES += "thunder_${{matrix.build_type}}"' >> ./conf/local.conf
-
-    - name: Check environment
-      run: |
         bitbake core-image-thunder -n
-
-# ----- Build -----
-    - name: Build image
-      run: |
         bitbake core-image-thunder
