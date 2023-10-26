@@ -1,4 +1,7 @@
 # meta-thunder-framework
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit) 
+
+![Poky LTS Validation](https://github.com/metrological/meta-thunder-framework/actions/workflows/Validation.yml/badge.svg)
 
 ## Introduction
 
