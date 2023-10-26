@@ -1,4 +1,4 @@
-name: Build Thunder on Yocto
+name: Validate recipes
 
 on:  
   # Allows you to run this workflow manually from the Actions tab
@@ -20,7 +20,7 @@ jobs:
         # yocto_version : [dunfell, kirkstone, scarthgap]
         machine : [raspberrypi3-64]
         build_type: [debug]
-        yocto_version : [dunfell]
+        yocto_version : [dunfell, kirkstone]
 
     name: Build ${{matrix.build_type}} on ${{matrix.yocto_version}} for ${{matrix.machine}}
     steps:
