@@ -16,10 +16,10 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
-    rm -rf ${D}${datadir}/WPEFramework/Controller/UI/*
-    mkdir -p ${D}${datadir}/WPEFramework/Controller/UI
-    cp -r ${S}/src/* ${D}${datadir}/WPEFramework/Controller/UI
-    cp -r ${S}/dist/* ${D}${datadir}/WPEFramework/Controller/UI
+    rm -rf ${D}${datadir}/Thunder/Controller/UI/*
+    mkdir -p ${D}${datadir}/Thunder/Controller/UI
+    cp -r ${S}/src/* ${D}${datadir}/Thunder/Controller/UI
+    cp -r ${S}/dist/* ${D}${datadir}/Thunder/Controller/UI
 }
 
-FILES:${PN} += "${datadir}/WPEFramework/Controller/UI/*"
+FILES:${PN} += "${datadir}/Thunder/Controller/UI/*"

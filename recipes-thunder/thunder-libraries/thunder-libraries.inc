@@ -1,4 +1,4 @@
-SUMMARY = "WPEFramework Libraries"
+SUMMARY = "Thunder Libraries"
 DESCRIPTION = "Thunder libraries component"
 HOMEPAGE = "https://github.com/WebPlatformForEmbedded/ThunderLibraries"
 SECTION = "thunder"

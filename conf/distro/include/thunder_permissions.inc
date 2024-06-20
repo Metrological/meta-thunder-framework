@@ -9,9 +9,9 @@ update_thunder_path_permissions () {
             chmod 0755 "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}"
             chown "${THUNDER_SUPER_USER_GROUP}:${THUNDER_SUPER_USER_GROUP}" "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}"
         fi
-	if [ -d "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}/WPEFramework" ]; then
-            chmod 0770 "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}/WPEFramework"
-            chown "${THUNDER_SUPER_USER_GROUP}:${THUNDER_GROUP}" "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}/WPEFramework"
+	if [ -d "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}/Thunder" ]; then
+            chmod 0770 "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}/Thunder"
+            chown "${THUNDER_SUPER_USER_GROUP}:${THUNDER_GROUP}" "${IMAGE_ROOTFS}/${THUNDER_PERSISTENT_PATH}/Thunder"
         fi
 
     fi
