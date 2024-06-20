@@ -23,4 +23,3 @@ THUNDER_PLATFORM_VIDEO_SUBSYSTEM ??= ""
 THUNDER_PLATFORM_VIDEO_DEVICE_GROUP ??= "video"
 
 DEPENDS += "git-replacement-native thunder-tools-native"
-
