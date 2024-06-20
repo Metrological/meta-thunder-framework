@@ -20,12 +20,6 @@ EXTRA_OECMAKE += "\
     -DBUILD_REFERENCE=${SRCREV} \
     -DPYTHON_EXECUTABLE=${PYTHON} \
 "
-do_install:append() {
-    if ${@bb.utils.contains("DISTRO_FEATURES", "opencdm", "true", "false", d)}
-    then
-        install -m 0644 ${D}${includedir}/WPEFramework/interfaces/IDRM.h ${D}${includedir}/cdmi.h
-    fi
-}
 
 FILES:${PN} += "${libdir}/thunder/proxystubs/*.so*"
 FILES:${PN}-dev += "${libdir}/thunder/proxystubs/*.so"
