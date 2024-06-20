@@ -1,4 +1,4 @@
-SUMMARY = "WPEFramework interfaces"
+SUMMARY = "Thunder interfaces"
 DESCRIPTION = "Thunder interfaces component"
 HOMEPAGE = "https://github.com/rdkcentral/ThunderInterfaces"
 SECTION = "thunder"

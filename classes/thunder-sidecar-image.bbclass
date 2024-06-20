@@ -9,7 +9,7 @@
 #           the target package.
 #       
 #           WPE_SIDECAR_FILENAMES_TO_COPY:append = " \
-#               WPEFramework \
+#               Thunder \
 #               WPEProcess \
 #            "
 # This will produce a selected archive type with an ${IMAGE_NAME} in tmp/deploy/images/.

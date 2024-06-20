@@ -1,5 +1,5 @@
 HOMEPAGE = "https://github.com/rdkcentral/Thunder"
-SUMMARY = "Web Platform for Embedded Framework"
+SUMMARY = "Thunder Framework"
 DESCRIPTION = "A C++ platform abstraction layer for generic functionality."
 SECTION = "thunder"
 LICENSE = "Apache-2.0"
@@ -100,7 +100,7 @@ PACKAGECONFIG[initscriptsupport] = "\
 "
 
 # FIXME
-# The WPEFramework also needs limited Plugin info in order to determine what to put in the "resumes" configuration
+# The Thunder also needs limited Plugin info in order to determine what to put in the "resumes" configuration
 # it feels a bit the other way around but lets set at least webserver and webkit
 PACKAGECONFIG[webserver_autoresume] = "-DPLUGIN_WEBSERVER=ON,-DPLUGIN_WEBSERVER=OFF,"
 PACKAGECONFIG[webkitbrowser_autoresume] = "-DPLUGIN_WEBKITBROWSER=ON,-DPLUGIN_WEBKITBROWSER=OFF,"

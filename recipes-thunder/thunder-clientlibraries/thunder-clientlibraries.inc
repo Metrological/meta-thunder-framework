@@ -1,4 +1,4 @@
-SUMMARY = "WPEFramework client libraries"
+SUMMARY = "Thunder client libraries"
 DESCRIPTION = "Thunder client libraries component"
 HOMEPAGE = "https://github.com/rdkcentral/ThunderClientLibraries"
 SECTION = "thunder"
