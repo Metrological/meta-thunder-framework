@@ -29,7 +29,7 @@ PACKAGECONFIG ??= "\
 
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'secapi', ' cryptography_secapi', 'cryptography_openssl', d)}"
 
-PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston', 'compositorclient_wayland compositorclient_wayland_weston', '', d)}"
+PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston', " compositorclient_wayland compositorclient_wayland_weston", '', d)}"
 PACKAGECONFIG:append:rdk = " compositorclient_wayland compositorclient_wayland_westeros"
 
 PACKAGECONFIG[bluetoothaudiosink] = "-DBLUETOOTHAUDIOSINK=ON,-DBLUETOOTHAUDIOSINK=OFF,bluez5"
