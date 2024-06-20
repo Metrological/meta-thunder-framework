@@ -26,10 +26,3 @@ EXTRA_OECMAKE += "\
     -DBUILD_SHARED_LIBS=ON \
     -DBUILD_REFERENCE=${SRCREV} \
 "
-
-FILES_SOLIBSDEV = ""
-FILES:${PN} += "${libdir}/*.so ${datadir}/WPEFramework/* ${PKG_CONFIG_DIR}/*.pc"
-FILES:${PN}-dev += "${libdir}/cmake/*"
-
-INSANE_SKIP:${PN} += "dev-so"
-INSANE_SKIP:${PN}-dbg += "dev-so"
