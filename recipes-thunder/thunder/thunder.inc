@@ -1,5 +1,5 @@
 HOMEPAGE = "https://github.com/rdkcentral/Thunder"
-SUMMARY = "Thunder Framework"
+SUMMARY = "Web Platform for Embedded Framework"
 DESCRIPTION = "A C++ platform abstraction layer for generic functionality."
 SECTION = "thunder"
 LICENSE = "Apache-2.0"
@@ -17,8 +17,6 @@ SRC_URI = "git://github.com/rdkcentral/Thunder.git;protocol=git;branch=${RECIPE_
 DEPENDS += "zlib"
 DEPENDS_libc-musl += "libexecinfo"
 
-SRC_URI += "file://20-video-device-udev.rules.in"
-
 inherit python3native systemd update-rc.d
 
 THUNDER_SYSTEM_PREFIX ??= "WPE"
@@ -27,23 +25,33 @@ THUNDER_IDLE_TIME ??= "180"
 THUNDER_ETHERNETCARD_NAME ??= "eth0"
 THUNDER_SOFT_KILL_CHECK_WAIT_TIME ??= "10"
 THUNDER_HARD_KILL_CHECK_WAIT_TIME ??= "4"
-
 THUNDER_TRACING_LEVEL ??= "0"
+
 THUNDER_INITSCRIPT_SYSTEMD_EXTRA_DEPENDS ??= ""
-THUNDER_INITSCRIPT_SYSTEM_ROOT_PATH ??= "home/root"
-THUNDER_INITSCRIPT_SYSTEMD_SERVICE ??= "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}"
+THUNDER_INITSCRIPT_SYSTEM_ROOT_PATH ??= "/home/root"
+THUNDER_INITSCRIPT_LEVEL ??= "${@bb.utils.contains('DISTRO_FEATURES', 'thunder', '40', '80', d)}"
 
 PACKAGECONFIG ??= "\
-    ${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'bluetooth_support', '', d)} \
-    hidenonexternalsymbols initscriptsupport messaging \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'provisioning', 'securesocket', '', d)} \
-    webserver_autoresume webkitbrowser_autoresume \
+    hidenonexternalsymbols \
+    messaging \
+    webkitbrowser_autoresume \
+    webserver_autoresume \
+    human_versioned_binaries \
+    udev_rules \
+    virtualinput \
 "
+
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debug', 'debug', '', d)}"
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debugoptimized', 'debugoptimized', '', d)}"
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_production', 'production', '', d)}"
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_release', 'release', '', d)}"
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_releasesymbols', 'releasesymbols', '', d)}"
+
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'init_service', 'init_script', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'provisioning', 'securesocket', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'bluetooth_support', '', d)}"
+
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debug', 'tracing', '', d)}"
 
 # CMAKE Build Type
 # DISTRO_FEATURES should be set to propagate build type across all necessary components
@@ -56,16 +64,17 @@ PACKAGECONFIG[production] = "-DCMAKE_BUILD_TYPE=MinSizeRel,,"
 
 # Options
 PACKAGECONFIG[bluetooth_support] = "-DBLUETOOTH_SUPPORT=ON,-DBLUETOOTH_SUPPORT=OFF,bluez5"
+PACKAGECONFIG[deadlockdetection] = "-DDEADLOCK_DETECTION=ON,-DDEADLOCK_DETECTION=OFF,"
+PACKAGECONFIG[exceptioncatching] = "-DEXCEPTION_CATCHING=ON,-DEXCEPTION_CATCHING=OFF,"
+PACKAGECONFIG[exceptionhandling] = "-DEXCEPTIONS_ENABLE=ON,-DEXCEPTIONS_ENABLE=OFF,"
+PACKAGECONFIG[hidenonexternalsymbols] = "-DHIDE_NON_EXTERNAL_SYMBOLS=ON,-DHIDE_NON_EXTERNAL_SYMBOLS=OFF,"
+PACKAGECONFIG[human_versioned_binaries] = "-DHUMAN_VERSIONED_BINARIES=ON,-DHUMAN_VERSIONED_BINARIES=OFF,"
+PACKAGECONFIG[performancemonitor] = "-DPERFORMANCE_MONITOR=ON,-DPERFORMANCE_MONITOR=OFF,"
 PACKAGECONFIG[securesocket] = "-DSECURE_SOCKET=ON,-DSECURE_SOCKET=OFF,openssl"
+PACKAGECONFIG[strictcompilersettings] = "-DENABLE_STRICT_COMPILER_SETTINGS=ON,-DENABLE_STRICT_COMPILER_SETTINGS=OFF,"
+PACKAGECONFIG[tracing] = "-DDISABLE_TRACING=OFF -DENABLED_TRACING_LEVEL=${THUNDER_TRACING_LEVEL},,"
 PACKAGECONFIG[virtualinput] = "-DVIRTUALINPUT=ON,-DVIRTUALINPUT=OFF,"
 PACKAGECONFIG[wcharsupport] = "-DWCHAR_SUPPORT=ON,-DWCHAR_SUPPORT=OFF,"
-PACKAGECONFIG[hidenonexternalsymbols] = "-DHIDE_NON_EXTERNAL_SYMBOLS=ON,-DHIDE_NON_EXTERNAL_SYMBOLS=OFF,"
-PACKAGECONFIG[performancemonitor] = "-DPERFORMANCE_MONITOR=ON,-DPERFORMANCE_MONITOR=OFF,"
-PACKAGECONFIG[strictcompilersettings] = "-DENABLE_STRICT_COMPILER_SETTINGS=ON,-DENABLE_STRICT_COMPILER_SETTINGS=OFF,"
-PACKAGECONFIG[deadlockdetection] = "-DDEADLOCK_DETECTION=ON,-DDEADLOCK_DETECTION=OFF,"
-PACKAGECONFIG[disabletracing] = "-DDISABLE_TRACING=ON,-DDISABLE_TRACING=OFF,"
-PACKAGECONFIG[exceptionhandling] = "-DEXCEPTIONS_ENABLE=ON,-DEXCEPTIONS_ENABLE=OFF,"
-PACKAGECONFIG[exceptioncatching] = "-DEXCEPTION_CATCHING=ON,-DEXCEPTION_CATCHING=OFF,"
 
 # Extensions
 PACKAGECONFIG[hibernate_support] = "-DHIBERNATESUPPORT=ON,-DHIBERNATESUPPORT=OFF,"
@@ -80,30 +89,20 @@ PACKAGECONFIG[processcontainers_lxc] = "-DPROCESSCONTAINERS_LXC=ON,-DPROCESSCONT
 PACKAGECONFIG[processcontainers_runc] = "-DPROCESSCONTAINERS_RUNC=ON,-DPROCESSCONTAINERS_RUNC=OFF,runc-docker"
 PACKAGECONFIG[warningreporting] = "-DWARNING_REPORTING=ON,-DWARNING_REPORTING=OFF,"
 
-# Tests
-PACKAGECONFIG[testloader] = "-DTEST_LOADER=ON,-DTEST_LOADER=OFF,"
-PACKAGECONFIG[cyclicinspector] = "-DTEST_CYCLICINSPECTOR=ON,-DTEST_CYCLICINSPECTOR=OFF,"
+# System scripts
+PACKAGECONFIG[init_script] = "-DINITV_SCRIPT=ON -DSYSTEM_ROOT_PATH="${THUNDER_INITSCRIPT_SYSTEM_ROOT_PATH}" -DSYSV_INIT_LEVEL="${THUNDER_INITSCRIPT_LEVEL}",-DINITV_SCRIPT=OFF,"
+PACKAGECONFIG[init_service] = "-DSYSTEMD_SERVICE=ON -DSYSTEMD_EXTRA_DEPENDS="${THUNDER_INITSCRIPT_SYSTEMD_EXTRA_DEPENDS}" -DSYSTEMD_UNIT_BASE_PATH="${systemd_unitdir}",-DSYSTEMD_SERVICE=OFF,"
+PACKAGECONFIG[udev_rules] = "-DUDEV_VIDEO_RULE=ON -DPLATFORM_VIDEO_DEVICE_GROUP="${THUNDER_PLATFORM_VIDEO_DEVICE_GROUP}" -DPLATFORM_VIDEO_SUBSYSTEM="${THUNDER_PLATFORM_VIDEO_SUBSYSTEM}",-DUDEV_VIDEO_RULE=OFF,"
 
-PACKAGECONFIG[messaging] = "\
-    -DTRACING=OFF \
-    -DMESSAGING=ON \
-    , -DTRACING=ON -DENABLED_TRACING_LEVEL=${THUNDER_TRACING_LEVEL} \
-    -DMESSAGING=OFF, \
-"
-PACKAGECONFIG[initscriptsupport] = "\
-    -DENABLE_INITSCRIPT_SUPPORT=ON \
-    -DSYSTEMD_SERVICE="${THUNDER_INITSCRIPT_SYSTEMD_SERVICE}" \
-    -DSYSTEM_ROOT_PATH="${THUNDER_INITSCRIPT_SYSTEM_ROOT_PATH}" \
-    -DSYSTEMD_EXTRA_DEPENDS="${THUNDER_INITSCRIPT_SYSTEMD_EXTRA_DEPENDS}" \
-    -DSYSTEMD_INSTALL_PATH="${systemd_unitdir}" \
-    , -DENABLE_INITSCRIPT_SUPPORT=OFF \
-"
+# Tests
+PACKAGECONFIG[cyclicinspector] = "-DTEST_CYCLICINSPECTOR=ON,-DTEST_CYCLICINSPECTOR=OFF,"
+PACKAGECONFIG[testloader] = "-DTEST_LOADER=ON,-DTEST_LOADER=OFF,"
 
 # FIXME
-# The Thunder also needs limited Plugin info in order to determine what to put in the "resumes" configuration
+# The WPEFramework also needs limited Plugin info in order to determine what to put in the "resumes" configuration
 # it feels a bit the other way around but lets set at least webserver and webkit
-PACKAGECONFIG[webserver_autoresume] = "-DPLUGIN_WEBSERVER=ON,-DPLUGIN_WEBSERVER=OFF,"
 PACKAGECONFIG[webkitbrowser_autoresume] = "-DPLUGIN_WEBKITBROWSER=ON,-DPLUGIN_WEBKITBROWSER=OFF,"
+PACKAGECONFIG[webserver_autoresume] = "-DPLUGIN_WEBSERVER=ON,-DPLUGIN_WEBSERVER=OFF,"
 
 def getlayerrevision(d):
     topdir = d.getVar('TOPDIR', d, True)
@@ -137,28 +136,16 @@ EXTRA_OECMAKE += "\
     ${@oe.utils.conditional('THUNDER_GROUP', '', '', '-DGROUP="${THUNDER_GROUP}"', d)} \
     -DPYTHON_EXECUTABLE="${PYTHON}""
 
-do_install:append() {
-    install -d ${D}${nonarch_base_libdir}/udev/rules.d
-    install -m 0644  ${S}/../20-video-device-udev.rules.in ${D}${nonarch_base_libdir}/udev/rules.d/20-video-device-udev.rules
-    sed -i -e "s|@SUBSYSTEM@|${THUNDER_PLATFORM_VIDEO_SUBSYSTEM}|g" ${D}${nonarch_base_libdir}/udev/rules.d/20-video-device-udev.rules
-    sed -i -e "s|@GROUP@|${THUNDER_PLATFORM_VIDEO_DEVICE_GROUP}|g" ${D}${nonarch_base_libdir}/udev/rules.d/20-video-device-udev.rules
-}
-
-SYSTEMD_SERVICE:${PN} = "wpeframework.service"
+SYSTEMD_SERVICE:${PN} = "thunder.service"
+# If WPE Framework is enabled as distro feature, start earlier. Assuming packagegroup-wpe-boot is used and we're in control for the network
+THUNDER_START = "${@bb.utils.contains('DISTRO_FEATURES', 'thunder', '40', '80', d)}"
 
 PACKAGES =+ "${PN}-initscript"
-FILES:${PN}-initscript = "${sysconfdir}/init.d/wpeframework"
-FILES_SOLIBSDEV = ""
-FILES:${PN} += "${libdir}/*.so ${libdir}/*/proxystubs/*.so* ${datadir}/WPEFramework/* "
-FILES:${PN}-dev += "${libdir}/cmake/* ${PKG_CONFIG_DIR}/*.pc"
-
+FILES:${PN}-initscript = "${sysconfdir}/init.d/thunder"
 INITSCRIPT_PACKAGES = "${PN}-initscript"
-INITSCRIPT_NAME:${PN}-initscript = "wpeframework"
+INITSCRIPT_NAME:${PN}-initscript = "thunder"
 INITSCRIPT_PARAMS:${PN}-initscript = "defaults ${THUNDER_START} 24"
 RRECOMMENDS:${PN} = "${PN}-initscript"
 
-# If WPE Framework is enabled as distro feature, start earlier. Assuming packagegroup-wpe-boot is used and we're in control for the network
-THUNDER_START = "${@bb.utils.contains('DISTRO_FEATURES', 'wpeframework', '40', '80', d)}"
-
-INSANE_SKIP:${PN} += "dev-so"
-INSANE_SKIP:${PN}-dbg += "dev-so"
+FILES:${PN} += "${libdir}/thunder/*/*.so* ${THUNDER_PERSISTENT_PATH}"
+FILES:${PN}-dev += "${libdir}/thunder/*/*.so"
