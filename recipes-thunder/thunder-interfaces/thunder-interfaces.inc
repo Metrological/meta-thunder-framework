@@ -20,7 +20,6 @@ EXTRA_OECMAKE += "\
     -DBUILD_REFERENCE=${SRCREV} \
     -DPYTHON_EXECUTABLE=${PYTHON} \
 "
-
 do_install:append() {
     if ${@bb.utils.contains("DISTRO_FEATURES", "opencdm", "true", "false", d)}
     then
@@ -28,11 +27,5 @@ do_install:append() {
     fi
 }
 
-FILES_SOLIBSDEV = ""
-FILES:${PN} += "${libdir}/* ${datadir}/WPEFramework/* ${PKG_CONFIG_DIR}/*.pc"
-FILES:${PN}-dev += "${libdir}/cmake/*"
-FILES:${PN} += "${includedir}/cdmi.h"
-
-INSANE_SKIP:${PN} += "dev-so"
-INSANE_SKIP:${PN}-dbg += "dev-so"
-
+FILES:${PN} += "${libdir}/thunder/proxystubs/*.so*"
+FILES:${PN}-dev += "${libdir}/thunder/proxystubs/*.so"
