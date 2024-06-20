@@ -14,8 +14,6 @@ SRC_URI = "git://github.com/rdkcentral/ThunderTools.git;protocol=git;branch=${RE
 
 S = "${WORKDIR}/git"
 
-OECMAKE_SOURCEPATH = "${WORKDIR}/git"
-
 PACKAGECONFIG[proxystub_security] = "\
     -DPROXYSTUB_GENERATOR_ENABLE_SECURITY="ON" \
     ,-DPROXYSTUB_GENERATOR_ENABLE_SECURITY="OFF", \
