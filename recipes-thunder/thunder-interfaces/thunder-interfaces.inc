@@ -21,5 +21,5 @@ EXTRA_OECMAKE += "\
     -DPYTHON_EXECUTABLE=${PYTHON} \
 "
 
-FILES:${PN} += "${libdir}/thunder/proxystubs/*.so*"
-FILES:${PN}-dev += "${libdir}/thunder/proxystubs/*.so"
+FILES:${PN} += "${libdir}/thunder/proxystubs/*.so* ${libdir}/wpeframework/proxystubs/*.so*"
+FILES:${PN}-dev += "${libdir}/thunder/proxystubs/*.so ${libdir}/wpeframework/proxystubs/*.so"
