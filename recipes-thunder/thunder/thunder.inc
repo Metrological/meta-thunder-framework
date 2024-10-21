@@ -111,7 +111,11 @@ def getlayerrevision(d):
     for layer in layers:
         my_layer = layer.split('/')[-1]
         if my_layer == 'meta-thunder-framework':
-            return base_get_metadata_git_revision(layer, None)
+            try:
+                return base_get_metadata_git_revision(layer, None)
+            except NameError:
+                return oe.buildcfg.get_metadata_git_revision(layer)
+
 
     return "unknown"
 
@@ -147,5 +151,5 @@ INITSCRIPT_NAME:${PN}-initscript = "thunder"
 INITSCRIPT_PARAMS:${PN}-initscript = "defaults ${THUNDER_START} 24"
 RRECOMMENDS:${PN} = "${PN}-initscript"
 
-FILES:${PN} += "${libdir}/thunder/*/*.so* ${THUNDER_PERSISTENT_PATH}"
-FILES:${PN}-dev += "${libdir}/thunder/*/*.so"
+FILES:${PN} += "${libdir}/thunder/*/*.so* ${THUNDER_PERSISTENT_PATH} ${libdir}/wpeframework/*/*.so*"
+FILES:${PN}-dev += "${libdir}/thunder/*/*.so ${libdir}/wpeframework/*/*.so"
