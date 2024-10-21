@@ -34,9 +34,9 @@ To get started with `meta-thunder-framework` and begin building thunder based ap
 1. Enter the ```source``` folder
 1. Get generic layers
    ``` shell
-   git clone -b dunfell git://git.yoctoproject.org/poky
-   git clone -b dunfell git://git.openembedded.org/openembedded-core
-   git clone -b dunfell git://git.openembedded.org/meta-openembedded
+   git clone -b scarthgap git://git.yoctoproject.org/poky
+   git clone -b scarthgap git://git.openembedded.org/openembedded-core
+   git clone -b scarthgap git://git.openembedded.org/meta-openembedded
    ``` 
 1. Get our meta layers
    ``` shell
