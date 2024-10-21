@@ -45,7 +45,7 @@ To get started with `meta-thunder-framework` and begin building thunder based ap
 
 1. Get a BSP layer for RaspberryPi
     ``` shell
-    git clone -b dunfell git://git.yoctoproject.org/meta-raspberrypi
+    git clone -b scarthgap git://git.yoctoproject.org/meta-raspberrypi
     ```
 1. From your work dir run ```source source/poky/oe-init-build-env ./build-rpi```
 1. Add these layers to build
