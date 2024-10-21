@@ -2,6 +2,7 @@ From 4021d1a2265f98b1968101b944776825435d9f18 Mon Sep 17 00:00:00 2001
 From: Bram Oosterhuis <bram.oosterhuis.nl@gmail.com>
 Date: Thu, 5 Oct 2023 12:36:16 +0200
 Subject: [PATCH] Fix Weston Compositor
+Upstream-Status: Inappropriate [Thunder adaptation]
 
 ---
  Source/compositorclient/Wayland/CMakeLists.txt |  2 +-

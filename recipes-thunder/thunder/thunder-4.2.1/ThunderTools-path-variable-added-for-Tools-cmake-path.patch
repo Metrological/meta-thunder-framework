@@ -3,6 +3,7 @@ From: HaseenaSainul <41037131+HaseenaSainul@users.noreply.github.com>
 Date: Wed, 15 Mar 2023 00:15:56 +0530
 Subject: [PATCH] ThunderTools: path variable added for Tools cmake path
  (#1272)
+Upstream-Status: Inappropriate [Thunder adaptation]
 
 Co-authored-by: Pierre Wielders <pierre@wielders.net>
 ---

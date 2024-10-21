@@ -2,6 +2,7 @@ From 074201342fe431467ce312091c55b104a628c1dc Mon Sep 17 00:00:00 2001
 From: Bram Oosterhuis <dev@bybram.com>
 Date: Wed, 18 Oct 2023 18:31:54 +0200
 Subject: [PATCH] Simplify FindGLESv2
+Upstream-Status: Inappropriate [Thunder adaptation]
 
 ---
  .../compositorclient/cmake/FindGLESv2.cmake   | 33 ++-----------------

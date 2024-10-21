@@ -2,6 +2,7 @@ From c9d256ad5df3d1781f7b8b8323f3ce676cd55e3c Mon Sep 17 00:00:00 2001
 From: bram oosterhuis <mail@bybram.com>
 Date: Mon, 6 Jul 2020 13:00:21 +0000
 Subject: [PATCH] Install also lib/mgmt.h
+Upstream-Status: Inappropriate [Thunder adaptation]
 
 ---
  Makefile.am | 2 +-
