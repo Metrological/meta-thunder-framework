@@ -1,14 +1,13 @@
 SUMMARY = "An image based on core-image that includes thunder."
 LICENSE = "MIT"
 
-inherit core-image
-
-IMAGE_INSTALL += "\
+IMAGE_INSTALL:append = " \
     packagegroup-core-boot \
     kernel-modules \
     packagegroup-thunder \
 "
 
-IMAGE_FEATURES += "\
+IMAGE_FEATURES:append = " \
     ssh-server-dropbear \
 "
+inherit core-image

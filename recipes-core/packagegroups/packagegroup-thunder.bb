@@ -8,7 +8,7 @@ PACKAGES = "\
     packagegroup-thunder \
 "
 
-RDEPENDS_packagegroup-thunder = "\
+RDEPENDS:${PN} = "\
     thunder \
     thunder-clientlibraries \
     thunder-interfaces \
@@ -16,4 +16,7 @@ RDEPENDS_packagegroup-thunder = "\
     thunder-ui \
 "
 
-PROVIDES += "packagegroup-wpeframework"
+PROVIDES:append = " \
+    packagegroup-wpeframework \
+    packagegroup-thunder \
+"
