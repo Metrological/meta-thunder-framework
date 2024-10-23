@@ -2,6 +2,8 @@ SUMMARY = "Thunder Framework Packagegroup"
 DESCRIPTION = "Thunder Packagegroup"
 LICENSE = "MIT"
 
+PACKAGE_ARCH = "${TUNE_PKGARCH}"
+
 inherit packagegroup
 
 PACKAGES = "\
