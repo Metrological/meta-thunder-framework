@@ -17,10 +17,9 @@ jobs:
       matrix:
         # machine : [raspberrypi3-64, raspberrypi4-64]
         # build_type: [debug, release, production]
-        # yocto_version : [dunfell, kirkstone, scarthgap]
         machine : [raspberrypi3-64]
         build_type: [debug]
-        yocto_version : [dunfell, kirkstone]
+        yocto_version : [dunfell, kirkstone, scarthgap]
 
     name: Build ${{matrix.build_type}} on ${{matrix.yocto_version}} for ${{matrix.machine}}
     steps:
