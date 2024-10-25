@@ -11,7 +11,7 @@ DEPENDS += "thunder"
 require ../include/thunder.inc
 require ../include/version.inc
 
-SRC_URI = "git://github.com/rdkcentral/ThunderInterfaces.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https"
+SRC_URI = "git://github.com/rdkcentral/ThunderInterfaces.git;protocol=https;branch=${RECIPE_BRANCH};protocol=https"
 
 inherit python3native
 

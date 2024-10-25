@@ -12,7 +12,7 @@ require ../include/version.inc
 
 require ${@oe.utils.conditional('THUNDER_GROUP', '', '', 'include/usergroup/thunder.inc', d)}
 
-SRC_URI = "git://github.com/rdkcentral/Thunder.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https"
+SRC_URI = "git://github.com/rdkcentral/Thunder.git;protocol=https;branch=${RECIPE_BRANCH};protocol=https"
 
 DEPENDS += "zlib"
 DEPENDS_libc-musl += "libexecinfo"

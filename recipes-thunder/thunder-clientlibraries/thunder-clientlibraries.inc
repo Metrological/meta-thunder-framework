@@ -11,7 +11,7 @@ DEPENDS += "thunder-interfaces"
 require ../include/thunder.inc
 require ../include/version.inc
 
-SRC_URI = "git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=git;branch=${RECIPE_BRANCH};protocol=https \
+SRC_URI = "git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=https;branch=${RECIPE_BRANCH};protocol=https \
            file://0001-Fix-Weston-Compositor.patch \
            "
 
