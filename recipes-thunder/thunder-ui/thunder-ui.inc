@@ -12,14 +12,17 @@ SRC_URI = "git://github.com/rdkcentral/ThunderUI.git;branch=${RECIPE_BRANCH};pro
 
 S = "${WORKDIR}/git"
 
+PRODUCT = Thunder
+PRODUCT:wpeframework = WPEFramework 
+
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
-    rm -rf ${D}${datadir}/Thunder/Controller/UI/*
-    mkdir -p ${D}${datadir}/Thunder/Controller/UI
-    cp -r ${S}/src/* ${D}${datadir}/Thunder/Controller/UI
-    cp -r ${S}/dist/* ${D}${datadir}/Thunder/Controller/UI
+    rm -rf ${D}${datadir}/${PRODUCT}/Controller/UI/*
+    mkdir -p ${D}${datadir}/${PRODUCT}/Controller/UI
+    cp -r ${S}/src/* ${D}${datadir}/${PRODUCT}/Controller/UI
+    cp -r ${S}/dist/* ${D}${datadir}/${PRODUCT}/Controller/UI
 }
 
-FILES:${PN} += "${datadir}/Thunder/Controller/UI/*"
+FILES:${PN} += "${datadir}/${PRODUCT}/Controller/UI/*"
