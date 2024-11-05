@@ -73,6 +73,11 @@ To get started with `meta-thunder-framework` and begin building thunder based ap
    bitbake core-image-thunder -n
    ```
 
+1. If you get: ERROR: PermissionError: [Errno 1] Operation not permitted
+   ``` shell
+   sudo apparmor_parser -R /etc/apparmor.d/unprivileged_userns
+   ```
+
 1. Download packages ```bitbake core-image-thunder --runonly=fetch```
 
 1. Run ```bitbake core-image-thunder``` to build the image
