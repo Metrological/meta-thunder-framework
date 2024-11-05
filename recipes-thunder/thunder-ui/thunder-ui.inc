@@ -12,8 +12,8 @@ SRC_URI = "git://github.com/rdkcentral/ThunderUI.git;branch=${RECIPE_BRANCH};pro
 
 S = "${WORKDIR}/git"
 
-PRODUCT = Thunder
-PRODUCT:wpeframework = WPEFramework 
+PRODUCT = "Thunder"
+PRODUCT:wpeframework = "WPEFramework" 
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
