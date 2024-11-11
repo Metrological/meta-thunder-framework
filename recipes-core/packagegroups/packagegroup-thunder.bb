@@ -14,7 +14,6 @@ RDEPENDS:${PN} = "\
     thunder \
     thunder-clientlibraries \
     thunder-interfaces \
-    thunder-libraries \
     thunder-ui \
 "
 
