@@ -18,6 +18,5 @@ RDEPENDS:${PN} = "\
 "
 
 PROVIDES:append = " \
-    packagegroup-wpeframework \
     packagegroup-thunder \
 "

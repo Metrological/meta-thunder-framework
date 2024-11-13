@@ -4,16 +4,12 @@ HOMEPAGE = "https://github.com/rdkcentral/ThunderClientLibraries"
 SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=847677038847363222ffb66cfa6406c2"
-PROVIDES += "wpeframework-clientlibraries"
-RPROVIDES:${PN} += "wpeframework-clientlibraries"
 DEPENDS += "thunder-interfaces"
 
 require ../include/thunder.inc
 require ../include/version.inc
 
-SRC_URI = "git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=https;branch=${RECIPE_BRANCH};protocol=https \
-           file://0001-Fix-Weston-Compositor.patch \
-           "
+SRC_URI = "git://github.com/rdkcentral/ThunderClientLibraries.git;protocol=https;branch=${RECIPE_BRANCH}"
 
 inherit python3native
 WPE_CDMI_ADAPTER_IMPL ??= "${@bb.utils.contains('DISTRO_FEATURES', 'nexus_svp', 'opencdmi_brcm_svp', 'opencdm_gst', d)}"
