@@ -4,8 +4,6 @@ HOMEPAGE = "https://github.com/rdkcentral/ThunderClientLibraries"
 SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=847677038847363222ffb66cfa6406c2"
-PROVIDES += "wpeframework-clientlibraries"
-RPROVIDES:${PN} += "wpeframework-clientlibraries"
 DEPENDS += "thunder-interfaces"
 
 require ../include/thunder.inc

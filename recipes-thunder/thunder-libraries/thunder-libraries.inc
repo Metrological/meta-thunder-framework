@@ -4,8 +4,6 @@ HOMEPAGE = "https://github.com/WebPlatformForEmbedded/ThunderLibraries"
 SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=85bcfede74b96d9a58c6ea5d4b607e58"
-PROVIDES += "wpeframework-libraries"
-RPROVIDES:${PN} += "wpeframework-libraries"
 DEPENDS += "thunder-tools-native thunder"
 
 require ../include/thunder.inc
