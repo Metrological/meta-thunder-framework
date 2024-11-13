@@ -1,11 +1,9 @@
 HOMEPAGE = "https://github.com/rdkcentral/Thunder"
-SUMMARY = "Web Platform for Embedded Framework"
+SUMMARY = "Thunder Framework"
 DESCRIPTION = "A C++ platform abstraction layer for generic functionality."
 SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=85bcfede74b96d9a58c6ea5d4b607e58"
-PROVIDES += "wpeframework"
-RPROVIDES:${PN} += "wpeframework"
 
 require ../include/thunder.inc
 require ../include/version.inc
@@ -151,5 +149,5 @@ INITSCRIPT_NAME:${PN}-initscript = "thunder"
 INITSCRIPT_PARAMS:${PN}-initscript = "defaults ${THUNDER_START} 24"
 RRECOMMENDS:${PN} = "${PN}-initscript"
 
-FILES:${PN} += "${libdir}/thunder/*/*.so* ${THUNDER_PERSISTENT_PATH} ${libdir}/wpeframework/*/*.so*"
-FILES:${PN}-dev += "${libdir}/thunder/*/*.so ${libdir}/wpeframework/*/*.so"
+FILES:${PN} += "${libdir}/thunder/*/*.so* ${THUNDER_PERSISTENT_PATH}"
+FILES:${PN}-dev += "${libdir}/thunder/*/*.so"

@@ -4,8 +4,6 @@ HOMEPAGE = "https://github.com/rdkcentral/ThunderInterfaces"
 SECTION = "thunder"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=2f6c18f99faffa0e5d4ff478705c53f8"
-PROVIDES += "wpeframework-interfaces"
-RPROVIDES:${PN} += "wpeframework-interfaces"
 DEPENDS += "thunder"
 
 require ../include/thunder.inc
