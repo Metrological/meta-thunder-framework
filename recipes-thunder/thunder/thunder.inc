@@ -39,6 +39,8 @@ PACKAGECONFIG ??= "\
     human_versioned_binaries \
     udev_rules \
     virtualinput \
+    localtracer \
+    privilegedrequest \
 "
 
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debug', 'debug', '', d)}"
