@@ -30,6 +30,8 @@ PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'secapi', ' cry
 PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston', " compositorclient_wayland compositorclient_wayland_weston", '', d)}"
 PACKAGECONFIG:append:rdk = " compositorclient_wayland compositorclient_wayland_westeros"
 
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', bb.utils.contains('PREFERRED_PROVIDER_virtual/mesa', 'mesa', 'compositorclient_mesa', '', d), d)}"
+
 PACKAGECONFIG[bluetoothaudiosink] = "-DBLUETOOTHAUDIOSINK=ON,-DBLUETOOTHAUDIOSINK=OFF,bluez5"
 PACKAGECONFIG[compositorclient] = "-DCOMPOSITORCLIENT=ON,-DCOMPOSITORCLIENT=OFF"
 PACKAGECONFIG[compositorclient_mesa] = "-DPLUGIN_COMPOSITOR_IMPLEMENTATION='Mesa',,mesa libdrm"
