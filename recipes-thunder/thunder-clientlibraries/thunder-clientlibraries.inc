@@ -30,7 +30,7 @@ PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'secapi', ' cry
 PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston', " compositorclient_wayland compositorclient_wayland_weston", '', d)}"
 PACKAGECONFIG:append:rdk = " compositorclient_wayland compositorclient_wayland_westeros"
 
-PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', bb.utils.contains('PREFERRED_PROVIDER_virtual/mesa', 'mesa', 'compositorclient_mesa', '', d), d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', bb.utils.contains('PREFERRED_PROVIDER_virtual/mesa', 'mesa', 'compositorclient_mesa graphicsbuffer', '', d), d)}"
 
 PACKAGECONFIG[bluetoothaudiosink] = "-DBLUETOOTHAUDIOSINK=ON,-DBLUETOOTHAUDIOSINK=OFF,bluez5"
 PACKAGECONFIG[compositorclient] = "-DCOMPOSITORCLIENT=ON,-DCOMPOSITORCLIENT=OFF"
@@ -46,6 +46,7 @@ PACKAGECONFIG[cryptography_test] = "-DBUILD_CRYPTOGRAPHY_TESTS=ON,,"
 PACKAGECONFIG[cryptography_thunder] = "-DCRYPTOGRAPHY_IMPLEMENTATION="Thunder",,"
 PACKAGECONFIG[deviceinfo] = "-DDEVICEINFO=ON,-DDEVICEINFO=OFF,"
 PACKAGECONFIG[displayinfo] = "-DDISPLAYINFO=ON,-DDISPLAYINFO=OFF,"
+PACKAGECONFIG[graphicsbuffer] = "-DGRAPHICSBUFFER=ON,-DGRAPHICSBUFFER=OFF,"
 PACKAGECONFIG[gstreamerclient] = "-DGSTREAMERCLIENT=ON,-DGSTREAMERCLIENT=OFF,gstreamer1 gst1-plugins-base"
 PACKAGECONFIG[gstreamerclient_rpi] = "-DPLUGIN_COMPOSITOR_IMPLEMENTATION='RPI',,"
 PACKAGECONFIG[opencdm] = "-DCDMI=ON,-DCDMI=OFF,"
