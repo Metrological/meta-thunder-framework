@@ -52,6 +52,7 @@ PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_releas
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'init_service', 'init_script', d)}"
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'provisioning', 'securesocket', '', d)}"
 PACKAGECONFIG:append = " ${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'bluetooth_support', '', d)}"
+PACKAGECONFIG:append = " ${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
 
 PACKAGECONFIG:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'thunder_debug', 'tracing', '', d)}"
 
@@ -79,6 +80,7 @@ PACKAGECONFIG[virtualinput] = "-DVIRTUALINPUT=ON,-DVIRTUALINPUT=OFF,"
 PACKAGECONFIG[wcharsupport] = "-DWCHAR_SUPPORT=ON,-DWCHAR_SUPPORT=OFF,"
 
 # Extensions
+PACKAGECONFIG[bluetooth] = "-DBLUETOOTH=ON -DBLUETOOTH_GATT_SUPPORT=ON,"
 PACKAGECONFIG[hibernate_support] = "-DHIBERNATESUPPORT=ON,-DHIBERNATESUPPORT=OFF,"
 PACKAGECONFIG[localtracer] = "-DLOCALTRACER=ON,-DLOCALTRACER=OFF,"
 PACKAGECONFIG[privilegedrequest] = "-DPRIVILEGEDREQUEST=ON,-DPRIVILEGEDREQUEST=OFF,"
